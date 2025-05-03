@@ -47,6 +47,7 @@ showmigrations:
 	@echo "Show migrations"
 	$(VENV)/bin/python manage.py showmigrations
 
+
 runserver:
 	@echo "Run the Django development server"
 	$(VENV)/bin/python manage.py runserver
@@ -135,4 +136,8 @@ help:
 	@echo "  make docker-down  - Stop docker containers"
 	@echo "  venv-activate	   - Activate the virtual environment"
 	@echo "  make run-server   - Run the Django development server"
+	@echo " makemigrations	   - Run makemigrations"
+	@echo " migrate           - Run migrate"
+	@echo " migrations        - Run makemigrations and migrate"
+	@echo " showmigrations    - Show migrations"
 	@echo
