@@ -1,4 +1,4 @@
-APP = script/ryanair_one_way_cheap.py
+APP = manage.py
 PYTHON = $(VENV)/bin/python3
 PYTHON_3_12 = python3.12.5
 PIP = $(VENV)/bin/pip
@@ -25,6 +25,31 @@ venv:
 venv-activate:
 	@echo "Run the following command to activate virtual environment:"
 	@echo source $(VENV)/bin/activate
+
+
+makemigrations:
+	@echo "Run makemigrations"
+	$(VENV)/bin/python manage.py makemigrations
+
+
+migrate:
+	@echo "Run migrate"
+	$(VENV)/bin/python manage.py migrate
+
+
+migrations:
+	@echo "Run migrations"
+	$(VENV)/bin/python manage.py makemigrations
+	$(VENV)/bin/python manage.py migrate
+
+
+showmigrations:
+	@echo "Show migrations"
+	$(VENV)/bin/python manage.py showmigrations
+
+runserver:
+	@echo "Run the Django development server"
+	$(VENV)/bin/python manage.py runserver
 
 
 setup:
