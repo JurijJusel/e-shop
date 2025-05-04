@@ -1,5 +1,14 @@
-from django.shortcuts import render
+from rest_framework.generics import ListCreateAPIView
+from .models import Hat
+from .serializers import HatSerializer
 
 
-def index(request):
-    return render(request, 'index.html')
+class HatListCreateView(ListCreateAPIView):
+    queryset = Hat.objects.all()
+    serializer_class = HatSerializer
+
+
+#from django.shortcuts import render
+
+#def index(request):
+#    return render(request, 'index.html')
