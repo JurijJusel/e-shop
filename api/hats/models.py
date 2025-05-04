@@ -9,7 +9,7 @@ class Hat(models.Model):
         )
     image = models.ImageField(upload_to='hat_images/')
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.name
