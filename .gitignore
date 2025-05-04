@@ -3,10 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Ignore everything in data directory
-jobs_script/data/
-data/
-**/.DS_Store
+# Ignore folders
+media/
+
+
 # Ignore everything in .vscode directory
 app/.vscode/
 .vscode/
