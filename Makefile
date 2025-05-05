@@ -136,8 +136,8 @@ help:
 	@echo "  make docker-down  		- Stop docker containers"
 	@echo "  venv-activate	  		- Activate the virtual environment"
 	@echo "  make run-server   		- Run the Django development server"
-	@echo " make migrations	   		- Run makemigrations"
-	@echo " make migrate            - Run migrate"
-	@echo " make migrations         - Run makemigrations and migrate"
-	@echo " make showmigrations     - Show migrations"
+	@echo "  make migrations	   	- Run makemigrations"
+	@echo "  make migrate           - Run migrate"
+	@echo "  make migrations        - Run makemigrations and migrate"
+	@echo "  make showmigrations    - Show migrations"
 	@echo
