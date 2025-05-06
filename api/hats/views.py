@@ -15,13 +15,6 @@ class HatDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Hat.objects.all()
     serializer_class = HatSerializer
 
-    #def patch(self, request, *args, **kwargs):
-    #    response = super().patch(request, *args, **kwargs)
-    #    hat = self.get_object()
-    #    hat.updated_at = timezone.now()
-    #    hat.save()
-    #    return response
-
     def patch(self, request, *args, **kwargs):
         if not request.data:
             return Response(
