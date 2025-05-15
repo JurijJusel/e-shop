@@ -21,7 +21,6 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.conf import settings
 from django.conf.urls.static import static
-#from api.hats.views import index
 
 
 schema_view = get_schema_view(
@@ -35,9 +34,7 @@ schema_view = get_schema_view(
 )
 
 
-
 urlpatterns = [
-    #path('api/hats', index, name='home'),
     path('admin/', admin.site.urls),
     path('api/', include('api.hats.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Hat
+from .models import Hat, Customer, Cart, CartItem, Order, OrderItem
 
 
 class HatSerializer(serializers.ModelSerializer):
@@ -29,3 +29,56 @@ class HatSerializer(serializers.ModelSerializer):
         if value < 1 or value > 1000:
             raise serializers.ValidationError("Kaina turi būti tarp 1 ir 1000.")
         return value
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['id', 'user', 'phone', 'email', 'address']
+        read_only_fields = ['id', 'user']
+
+
+class CartItemSerializer(serializers.ModelSerializer):
+    phone = serializers.CharField(write_only=True)
+    email = serializers.EmailField(write_only=True)
+    address = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    class Meta:
+        model = CartItem
+        fields = ['id', 'hat', 'unit_price', 'phone', 'email', 'address']
+        read_only_fields = ['id', 'unit_price']
+
+
+class CartSerializer(serializers.ModelSerializer):
+    items = CartItemSerializer(many=True, read_only=True)
+    total = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Cart
+        fields = ['id', 'customer', 'created_at', 'updated_at', 'is_active', 'items', 'total']
+        read_only_fields = ['id', 'customer', 'created_at', 'updated_at', 'items', 'total']
+
+    def get_total(self, obj):
+        return sum(item.unit_price for item in obj.items.all())
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    hat = HatSerializer(read_only=True)
+
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'hat', 'unit_price']
+        read_only_fields = ['id', 'unit_price']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer(read_only=True)
+    items = OrderItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = [
+            'id', 'customer', 'shipping_address', 'order_date',
+            'status', 'total_amount', 'payment_method',
+            'payment_status', 'items'
+        ]
+        read_only_fields = ['id', 'customer', 'order_date', 'total_amount', 'items']
