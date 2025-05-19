@@ -105,13 +105,6 @@ class OrderDetailView(RetrieveAPIView):
     serializer_class = OrderSerializer
 
 
-#class OrderListView(ListAPIView):
-#    serializer_class = OrderSerializer
-
-#    def get_queryset(self):
-#        customer = get_or_create_customer(self.request)
-#        return Order.objects.filter(customer=customer)
-
 class OrderListCreateView(ListCreateAPIView):
     serializer_class = OrderSerializer
 

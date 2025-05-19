@@ -3,9 +3,11 @@ from .models import Hat, Customer, Cart, CartItem, Order, OrderItem
 
 
 class HatSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Hat
-        fields = '__all__'  # ['id', 'name', 'price', 'description', 'image', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'price', 'image', 'image_url', 'created_at', 'updated_at']
 
     def get_image_url(self, obj):
         request = self.context.get('request')
@@ -34,8 +36,8 @@ class HatSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['id', 'user', 'phone', 'email', 'address']
-        read_only_fields = ['id', 'user']
+        fields = ['id', 'customer_id', 'phone', 'email', 'address']
+        read_only_fields = ['id']
 
 
 class CartItemSerializer(serializers.ModelSerializer):
