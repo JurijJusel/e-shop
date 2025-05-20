@@ -29,26 +29,15 @@ class Customer(models.Model):
 
 class Cart(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    hats = models.ManyToManyField('Hat')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def total_price(self):
-        return sum(item.unit_price for item in self.items.all())
+        return sum(hat.price for hat in self.hats.all())
 
     def __str__(self):
         return f"Cart #{self.id} for {self.customer.email}"
-
-
-class CartItem(models.Model):
-    cart = models.ForeignKey(Cart, related_name='items', on_delete=models.CASCADE)
-    hat = models.OneToOneField(Hat, on_delete=models.CASCADE)
-    unit_price = models.IntegerField()
-
-    class Meta:
-        unique_together = ('cart', 'hat')
-
-    def __str__(self):
-        return f"{self.hat.name} in cart #{self.cart.id}"
 
 
 class Order(models.Model):
@@ -75,7 +64,7 @@ class Order(models.Model):
         return total
 
     def __str__(self):
-        return f"Order #{self.id} by {self.customer.user.username}"
+        return f"Order #{self.id} by {self.customer.email}"
 
 
 class OrderItem(models.Model):
