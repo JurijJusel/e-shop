@@ -1,11 +1,13 @@
 from rest_framework import serializers
-from .models import Hat
+from .models import Hat, Customer, Cart, Order, OrderItem
 
 
 class HatSerializer(serializers.ModelSerializer):
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Hat
-        fields = '__all__'  # ['id', 'name', 'price', 'description', 'image', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'price', 'image', 'image_url', 'created_at', 'updated_at']
 
     def get_image_url(self, obj):
         request = self.context.get('request')
@@ -29,3 +31,43 @@ class HatSerializer(serializers.ModelSerializer):
         if value < 1 or value > 1000:
             raise serializers.ValidationError("Kaina turi būti tarp 1 ir 1000.")
         return value
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ['id', 'customer_id', 'phone', 'email', 'address']
+
+class CartSerializer(serializers.ModelSerializer):
+    hats = HatSerializer(many=True, read_only=True)
+    total = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Cart
+        fields = ['id', 'customer', 'hats', 'created_at', 'updated_at', 'total']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'total']
+
+    def get_total(self, obj):
+        return sum(hat.price for hat in obj.hats.all())
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    hat = HatSerializer(read_only=True)
+
+    class Meta:
+        model = OrderItem
+        fields = ['id', 'hat', 'unit_price']
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    customer = CustomerSerializer(read_only=True)
+    items = OrderItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = [
+            'id', 'customer', 'shipping_address', 'order_date',
+            'status', 'total_amount', 'payment_method',
+            'payment_status', 'items'
+        ]
+        read_only_fields = ['id', 'customer', 'order_date', 'total_amount', 'items']
