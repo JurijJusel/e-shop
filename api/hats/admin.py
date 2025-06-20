@@ -1,4 +1,4 @@
 from django.contrib import admin
-from api.hats.models import Hat
+from api.hats.models import Product
 
-admin.site.register(Hat)
+admin.site.register(Product)

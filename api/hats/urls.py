@@ -1,17 +1,16 @@
-from django.urls import path
-from .views import (HatListCreateView, HatDetailView,
-                    CartView, OrderListCreateView, OrderDetailView)
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import (ProductViewSet, CustomerViewSet,
+                   CartViewSet, OrderViewSet, OrderStatusViewSet)
 
+
+router = DefaultRouter()
+router.register(r'products', ProductViewSet, basename='product')
+router.register(r'customers', CustomerViewSet, basename='customer')
+router.register(r'carts', CartViewSet, basename='cart')
+router.register(r'orders', OrderViewSet, basename='order')
+router.register(r'order-statuses', OrderStatusViewSet, basename='order-status')
 
 urlpatterns = [
-    # Kepurių API
-    path('hats/', HatListCreateView.as_view(), name='hat-list-create'),
-    path('hats/<int:pk>/', HatDetailView.as_view(), name='hat-detail'),
-
-    # Krepšelio API
-    path('cart/', CartView.as_view(), name='cart-detail'),
-
-    # Užsakymų API
-    path('orders/', OrderListCreateView.as_view(), name='order-list-create'),
-    path('orders/<int:pk>/', OrderDetailView.as_view(), name='order-detail'),
+    path('', include(router.urls)),
 ]
