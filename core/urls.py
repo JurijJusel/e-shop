@@ -36,6 +36,9 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include('api.hats.urls')),
+    path('api/', include('api.products.urls')),
+    path('api/', include('api.customers.urls')),
+    path('api/', include('api.carts.urls')),
+    path('api/', include('api.orders.urls')),  # Order and order status 'api/orders/statuses'
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
