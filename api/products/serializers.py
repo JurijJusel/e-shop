@@ -4,16 +4,16 @@ from .models import Product
 
 class ProductSerializer(serializers.ModelSerializer):
     image_url = serializers.SerializerMethodField()
-    images = serializers.SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'image',
-                  'image_url', 'images', 'created_at', 'updated_at']
+        fields = ['id', 'name', 'description', 'price', 'image','image_url',
+                  'created_at', 'updated_at']
+
 
     def get_image_url(self, obj):
         request = self.context.get('request')
-        if obj.image and request:
+        if obj.image and hasattr(obj.image, 'url') and request:
             return request.build_absolute_uri(obj.image.url)
         return None
 
