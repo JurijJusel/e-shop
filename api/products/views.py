@@ -1,4 +1,5 @@
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product
@@ -17,21 +18,21 @@ class ProductViewSet(viewsets.ModelViewSet):
     search_fields = ['name','description']
 
 
-@api_view(['GET'])
-def all_products_list(request):
-    products = Product.objects.all()
-    serializer = ProductSerializer(products, many=True, context={'request': request})
-    return Response(serializer.data)
+class AllProductsList(APIView):
+    def get(self, request):
+        products = Product.objects.all()
+        serializer = ProductSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data)
 
 
-@api_view(['GET'])
-def products_by_price(request):
-    max_price = request.query_params.get('price')
-    products = Product.objects.all()
-    if max_price:
-        try:
-            products = products.filter(price__lte=max_price)
-        except (ValueError, TypeError):
-            return Response({"error": "Invalid price format"}, status=400)
-    serializer = ProductSerializer(products, many=True, context={'request': request})
-    return Response(serializer.data)
+class ProductsByPrice(APIView):
+    def get(self, request):
+        max_price = request.query_params.get('price')
+        products = Product.objects.all()
+        if max_price:
+            try:
+                products = products.filter(price__lte=max_price)
+            except (ValueError, TypeError):
+                return Response({"error": "Invalid price format"}, status=400)
+        serializer = ProductSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data)

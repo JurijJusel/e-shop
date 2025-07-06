@@ -6,8 +6,9 @@ from . import views
 router = DefaultRouter()
 router.register(r'products', views.ProductViewSet, basename='product')
 
+
 urlpatterns = [
+    path('products/all/', views.AllProductsList.as_view(), name='all-products'),
+    path('products/price/', views.ProductsByPrice.as_view(), name='products-by-price'),
     path('', include(router.urls)),
-    path('all-products/', views.all_products_list, name='all-products'),
-    path('products-by-price/', views.products_by_price, name='products-by-price'),
 ]
