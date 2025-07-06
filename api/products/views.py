@@ -6,6 +6,7 @@ from .models import Product
 from .serializers import ProductSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from decimal import Decimal
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -26,12 +27,12 @@ class AllProductsList(APIView):
 
 
 class ProductsByPrice(APIView):
-    def get(self, request):
-        max_price = request.query_params.get('price')
+    def get(self, request, max_price=None):
         products = Product.objects.all()
         if max_price:
             try:
-                products = products.filter(price__lte=max_price)
+                max_price_decimal = Decimal(max_price)
+                products = products.filter(price__lte=max_price_decimal)
             except (ValueError, TypeError):
                 return Response({"error": "Invalid price format"}, status=400)
         serializer = ProductSerializer(products, many=True, context={'request': request})

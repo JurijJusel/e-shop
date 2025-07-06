@@ -9,6 +9,6 @@ router.register(r'products', views.ProductViewSet, basename='product')
 
 urlpatterns = [
     path('products/all/', views.AllProductsList.as_view(), name='all-products'),
-    path('products/price/', views.ProductsByPrice.as_view(), name='products-by-price'),
+    path('products/price/<str:max_price>/', views.ProductsByPrice.as_view(), name='products-by-price'),
     path('', include(router.urls)),
 ]
